@@ -113,7 +113,7 @@ describe 'JPCA EAD export mappings' do
         end
       end
 
-      it 'exports other rights statement to altrender' do
+      it 'exports other rights basis to altrender' do
         expect(doc.at_xpath("/ead/archdesc/userestrict[@type='other']").attributes).
           to include('altrender')
         expect(doc.at_xpath("/ead/archdesc/userestrict[@altrender]/@altrender").content).
@@ -174,7 +174,7 @@ describe 'JPCA EAD export mappings' do
         end
       end
 
-      it 'exports other rights statement to altrender' do
+      it 'exports other rights basis to altrender' do
         expect(doc.at_xpath("/ead/archdesc/dsc/c/userestrict[@type='other']").attributes).
           to include('altrender')
         expect(doc.at_xpath("/ead/archdesc/dsc/c/userestrict[@altrender]/@altrender").content).
