@@ -15,12 +15,14 @@ describe 'JPCA EAD export mappings' do
   def load_export_fixtures
     @published_note = build(:json_note_rights_statement, publish: true)
     @unpublished_note = build(:json_note_rights_statement, publish: false)
+    other_opts = { rights_type: 'other', other_rights_basis: 'policy', start_date: generate(:yyyy_mm_dd) }
 
     resource = create(:json_resource,
                       :publish => true,
                       :rights_statements => [build(:json_rights_statement,
                                                    notes: [@published_note,
-                                                           @unpublished_note])]
+                                                           @unpublished_note]),
+                                             build(:json_rights_statement, other_opts)]
                       )
 
     @resource = JSONModel(:resource).find(resource.id)
@@ -30,7 +32,8 @@ describe 'JPCA EAD export mappings' do
                               :publish => true,
                               :rights_statements => [build(:json_rights_statement,
                                                            notes: [@published_note,
-                                                                   @unpublished_note])]
+                                                                   @unpublished_note]),
+                                                     build(:json_rights_statement, other_opts)]
                               )
   end
 
@@ -109,6 +112,18 @@ describe 'JPCA EAD export mappings' do
           expect(note.at_xpath("@type").content).to match(@published_note.type)
         end
       end
+
+      it 'exports other rights statement to altrender' do
+        expect(doc.at_xpath("/ead/archdesc/userestrict[@type='other']").attributes).
+          to include('altrender')
+        expect(doc.at_xpath("/ead/archdesc/userestrict[@altrender]/@altrender").content).
+          to match('policy')
+      end
+
+      it 'does not export altrender attribute for non-other type rights statements' do
+        expect(doc.at_xpath("/ead/archdesc/userestrict[@type='copyright']").attributes).
+          not_to include('altrender')
+      end
     end
   end
 
@@ -157,6 +172,18 @@ describe 'JPCA EAD export mappings' do
           expect(note.content).to match(@published_note.content.join(''))
           expect(note.at_xpath("@type").content).to match(@published_note.type)
         end
+      end
+
+      it 'exports other rights statement to altrender' do
+        expect(doc.at_xpath("/ead/archdesc/dsc/c/userestrict[@type='other']").attributes).
+          to include('altrender')
+        expect(doc.at_xpath("/ead/archdesc/dsc/c/userestrict[@altrender]/@altrender").content).
+          to match('policy')
+      end
+
+      it 'does not export altrender attribute for non-other type rights statements' do
+        expect(doc.at_xpath("/ead/archdesc/dsc/c/userestrict[@type='copyright']").attributes).
+          not_to include('altrender')
       end
     end
   end

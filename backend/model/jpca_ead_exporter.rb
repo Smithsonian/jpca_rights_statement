@@ -7,16 +7,22 @@ class EADSerializer < ASpaceExport::Serializer
 
   def serialize_rights(data, xml, fragments)
     data.rights_statements.each do |rts_stmt|
-      xml.userestrict({ id: "aspace_#{rts_stmt['identifier']}", type: rts_stmt['rights_type'] }) {
+
+      rts_atts = {}
+      rts_atts['id'] = "aspace_#{rts_stmt['identifier']}"
+      rts_atts['type'] = rts_stmt['rights_type']
+      rts_atts['altrender'] = rts_stmt['other_rights_basis'] unless rts_stmt.dig('other_rights_basis').nil?
+
+      xml.userestrict(rts_atts) {
         xml.head('Rights Statement')
 
         rts_stmt['notes'].each do |note|
 
-          atts = {}
-          atts['type'] = note['type']
-          atts['audience'] = 'internal' if note['publish'] === false
+          note_atts = {}
+          note_atts['type'] = note['type']
+          note_atts['audience'] = 'internal' if note['publish'] === false
 
-          xml.note(atts) {
+          xml.note(note_atts) {
             xml.p {
               note['content'].each do |c|
                 sanitize_mixed_content(c, xml, fragments)

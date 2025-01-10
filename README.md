@@ -15,8 +15,8 @@ _Rights Statements_
 
 ## Tests
 
-Run the backend tests via: 
+Run the backend tests from the application root directory with: 
 
 ```
-./build/run backend:test -Dspec="../../plugins/jpca_rights_statement"
+./build/run backend:test:plugin -Dexample='JPCA EAD export mappings'
 ```
