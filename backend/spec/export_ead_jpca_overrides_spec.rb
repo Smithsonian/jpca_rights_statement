@@ -72,7 +72,7 @@ describe 'JPCA EAD export mappings' do
 
       it 'exports rights_statements to <userestrict>' do
         expect(doc.at_xpath("/ead/archdesc/userestrict/@id").content).
-          to match("aspace_#{@resource.rights_statements.first['identifier']}")
+          to match(@resource.rights_statements.first['identifier'])
         expect(doc.at_xpath("/ead/archdesc/userestrict/@type").content).
           to match(@resource.rights_statements.first['rights_type'])
         expect(doc.at_xpath("/ead/archdesc/userestrict/head").content).
@@ -133,7 +133,7 @@ describe 'JPCA EAD export mappings' do
 
       it 'exports rights_statements to <userestrict>' do
         expect(doc.at_xpath("/ead/archdesc/dsc/c/userestrict/@id").content).
-          to match("aspace_#{@archival_object.rights_statements.first['identifier']}")
+          to match(@archival_object.rights_statements.first['identifier'])
         expect(doc.at_xpath("/ead/archdesc/dsc/c/userestrict/@type").content).
           to match(@archival_object.rights_statements.first['rights_type'])
         expect(doc.at_xpath("/ead/archdesc/dsc/c/userestrict/head").content).
