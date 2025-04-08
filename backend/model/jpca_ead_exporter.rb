@@ -9,7 +9,7 @@ class EADSerializer < ASpaceExport::Serializer
     data.rights_statements.each do |rts_stmt|
 
       rts_atts = {}
-      rts_atts['id'] = "aspace_#{rts_stmt['identifier']}"
+      rts_atts['id'] = rts_stmt['identifier']
       rts_atts['type'] = rts_stmt['rights_type']
       rts_atts['altrender'] = rts_stmt['other_rights_basis'] unless rts_stmt.dig('other_rights_basis').nil?
 
